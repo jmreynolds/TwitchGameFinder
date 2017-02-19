@@ -8,14 +8,14 @@ namespace TestHarness
     {
         static void Main(string[] args)
         {
-            var foo = new TwitchGames();
+            var twitchGames = new TwitchGames();
             int offset = 0;
             var userInput = "";
 
 
             while (userInput != "q")
             {
-                var channels = foo.SearchGames(100, offset);
+                var channels = twitchGames.SearchGames(100, offset);
                 channels.Where(x => x.Channels < 30).ToList().ForEach(x =>
                 {
                     Console.WriteLine($"Game: {x.Game.Name}    Channels: {x.Channels}    Viewers: {x.Viewers}");
