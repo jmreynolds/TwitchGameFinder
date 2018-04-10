@@ -11,7 +11,7 @@ namespace TwitchService
         {
             TwitchApi.SetClientId("ym8haxs2lu162g80xjbqu62pxibebk");
             var channelList = TwitchApi.GetGamesByPopularity(count, offset);
-            var gameByPopularityListings = channelList.Result.OrderByDescending(x=>x.Channels);
+            var gameByPopularityListings = channelList.Result.OrderByDescending(x=> x.Viewers / x.Channels);
             return gameByPopularityListings.ToList();
         }
     }
