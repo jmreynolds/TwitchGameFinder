@@ -1,6 +1,6 @@
-﻿using Core.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Telerik.JustMock;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
+using TwitchService;
 
 namespace UnitTests
 {
@@ -11,6 +11,7 @@ namespace UnitTests
     public class StreamsTests
     {
         private TestContext testContextInstance;
+        private TwitchGames _twitchService;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -41,8 +42,11 @@ namespace UnitTests
         // public static void MyClassCleanup() { }
         //
         // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
+        [TestInitialize()]
+        public void MyTestInitialize()
+        {
+            _twitchService = new TwitchGames();
+        }
         //
         // Use TestCleanup to run code after each test has run
         // [TestCleanup()]
@@ -50,12 +54,20 @@ namespace UnitTests
         //
         #endregion
 
-        [TestMethod, TestCategory("Unit")]
-        public async void SearchStreams_Should_Return_Streams()
+        [TestMethod, TestCategory("Integration")]
+        public void SearchStreams_Should_Return_Streams()
         {
-            var twitchService = Mock.Create<ITwitchService>();
-            var streams = await twitchService.SearchStreams();
-            Assert.IsNotNull(streams);
+            var streams = _twitchService.SearchStreams();
+            streams.ShouldNotBeNull();
+            streams.Result.Count.ShouldBeGreaterThan(0);
+        }
+
+        [TestMethod, TestCategory("Integration")]
+        public void SearchGames_Should_Return_Games()
+        {
+            var games = _twitchService.SearchGames();
+            games.ShouldNotBeNull();
+            games.Result.Count.ShouldBeGreaterThan(0);
         }
     }
 }
